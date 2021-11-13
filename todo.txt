@@ -1,0 +1,12 @@
++create trigger to start job
++start on job on container start
++run in cluster mode
++make sure that only one starts at a time while container is started.
+select r.m, r.job_group,r.job_name, count(*) 
+from 
+	(select distinct date_trunc('second', date_time)as m,scheduler_instance_id, job_group, job_name from demo.execution) r  
+group by r.m, r.job_group,  r.job_name 
+having count(*)>1 
+
+how to pass spring bean to a job
+(e.g. job has a name demo-job - it should start only 1 time per minute - not twice)
