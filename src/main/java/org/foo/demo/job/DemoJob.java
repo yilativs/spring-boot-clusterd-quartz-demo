@@ -1,23 +1,25 @@
 package org.foo.demo.job;
 
-import org.foo.demo.QuartzWithSpringDemoApplication;
 import org.foo.demo.service.DemoService;
 import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-/**
- * Instances of this class are not managed by Spring.
- *
- */
+//new instance will be created on each execution and autowired by spring, because it extends QuartzJobBean
 @DisallowConcurrentExecution
-public class DemoJob implements Job {
+public class DemoJob extends QuartzJobBean {
+
+	final DemoService service;
+
+	public DemoJob(DemoService service) {
+		this.service = service;
+	}
 
 	@Override
-	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
-		DemoService service = QuartzWithSpringDemoApplication.getContext().getBean(DemoService.class);
-		service.writeCurrentDateTime(10,jobContext.getJobDetail());
+	protected void executeInternal(JobExecutionContext jobContext) throws JobExecutionException {
+		service.writeCurrentDateTime(10, jobContext.getJobDetail());
+
 	}
 
 }

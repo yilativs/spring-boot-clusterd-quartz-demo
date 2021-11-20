@@ -12,6 +12,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.springframework.context.annotation.Configuration;
 
+//see https://docs.spring.io/spring-boot/docs/2.1.3.RELEASE/reference/html/boot-features-quartz.html
 @Configuration
 public class QuartzConfiguration {
 
@@ -32,7 +33,7 @@ public class QuartzConfiguration {
 		if (!scheduler.isStarted()) {
 			// we give 10 seconds for context to start to initialize, this is needed because
 			// later we get beans from context in DemoJob
-			scheduler.startDelayed(10);
+			scheduler.start();
 		}
 
 	}
